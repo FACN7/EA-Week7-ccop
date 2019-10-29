@@ -1,5 +1,6 @@
-const {
-} = require("./handlers");
+const {   homeHandler,
+    publicHandler,
+    errorHandler,loginHandler,signUpHandler} = require("./handlers");
   
 
 const router = (request, response) => {
@@ -7,11 +8,14 @@ const router = (request, response) => {
       if (url === "/") {
       homeHandler(response);
     } else if (url === "/login") {
+        loginHandler(url,response)
 
-    } else if (url.includes("public")) {
+    }  else if (url === "/signup") {
+        signUpHandler(url,response)
+
+    }else if (url.includes("public")) {
         publicHandler(url, response);
     } else if (url === "/logout") {
-    
     } else if (url === "/add-trnasaction") {
       
     } else if (url === "/delete-trnasaction") {
