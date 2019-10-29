@@ -14,6 +14,7 @@ BEGIN;
         email VARCHAR (50),
         balance INTEGER NOT NULL,
         descrip VARCHAR (50) NOT NULL,
+        date DATE DEFAULT CURRENT_DATE,
         FOREIGN KEY (email) REFERENCES users (email)
     );
 
