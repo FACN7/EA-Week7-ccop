@@ -1,8 +1,8 @@
 const databaseConnection = require("../database/db_connection.js");
 
-const login = (email, pass, cb) => {
+const login = (email, cb) => {
   databaseConnection.query(
-    `SELECT name,password FROM users WHERE email=${email}`,
+    `SELECT name,password FROM users WHERE email=$1`,[email],
     (err, res) => {
       if (err) {
         return cb(err);
