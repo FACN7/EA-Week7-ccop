@@ -29,18 +29,18 @@
 
       <div id="login-form">
         <form class="form" action="/login" method="POST">
-          <input type="text" id="login_email" placeholder="Enter email" />
-          <input type="password" id="login_pass" placeholder="Enter password" />
-          <button type="button" class="btn login">login</button>
+          <input type="text" id="login_email"  name="email" placeholder="Enter email" />
+          <input type="password" id="login_pass" name="password" placeholder="Enter password" />
+          <button type="submit" name="button" class="btn login">login</button>
         </form>
       </div>
 
       <div id="signup-form">
           <form class="form" action="/signup" method="POST">
-          <input type="email" id="signup_email" placeholder="Enter your email" />
-          <input type="text" id="signup_name" placeholder="Enter your name" />
-          <input type="password" id="signup_pass" placeholder="Create password" />
-          <button type="button" class="btn signup">create account</button>
+          <input type="email" id="signup_email" name="email" placeholder="Enter your email" />
+          <input type="text" id="signup_name" name="name" placeholder="Enter your name" />
+          <input type="password" id="signup_pass" name="password"placeholder="Create password" />
+          <button type="submit" class="btn signup">create account</button>
         </form>
       </div>
     </div>

@@ -8,10 +8,10 @@ const router = (request, response) => {
       if (url === "/") {
       homeHandler(response);
     } else if (url === "/login") {
-        loginHandler(url,response)
+        loginHandler(request,response)
 
     }  else if (url === "/signup") {
-        signUpHandler(url,response)
+        signUpHandler(request,response)
 
     }else if (url.includes("public")) {
         publicHandler(url, response);

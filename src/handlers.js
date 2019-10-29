@@ -13,17 +13,7 @@ const { sign, verify } = require('jsonwebtoken');
 
 const SECRET = 'poiugyfguhijokpkoihugyfyguhijo';
 
-const send401 = () => {
-    const message = 'fail!';
-    res.writeHead(
-      401,
-      {
-        'Content-Type': 'text/plain',
-        'Content-Length': message.length
-      }
-    );
-    return res.end(message);
-  }
+
 
 
 const serverError = (err, response) => {
@@ -69,13 +59,14 @@ const homeHandler = response => {
 console.log("loginhandler")
     let data = "";
     request.on("data", function (chunk) {
+        
       data += chunk;
     });
     request.on("end", () => {
       const password = queryString.parse(data).password;
       const email = queryString.parse(data).email;
 
-      login_query(email,password,(err,res)=>{
+      login_query(email,(err,res)=>{
         if (err) {
             response.writeHead(500, "Content-Type: text/html");
             response.end("<h1>Sorry, there was a problem logging</h1>");
@@ -111,7 +102,17 @@ console.log("loginhandler")
   }
 
   const signUpHandler= (request, response) =>{
-
+    const send401 = () => {
+        const message = 'fail!';
+        response.writeHead(
+          401,
+          {
+            'Content-Type': 'text/plain',
+            'Content-Length': message.length
+          }
+        );
+        return response.end(message);
+      }
     let data = "";
     request.on("data", function (chunk) {
       data += chunk;
@@ -120,10 +121,13 @@ console.log("loginhandler")
       const password = queryString.parse(data).password;
       const email = queryString.parse(data).email;
       const name=queryString.parse(data).name;
+    //   console.log(name,password,email);
       let userDetails={userId:email,password:password};
+      console.log(userDetails)
       const signup = sign(userDetails, SECRET);
       signup_query(email,name,signup,(err,res)=>{
         if (err) {
+            console.log("signup_query:",err);
             return send401();
           } else {
                     
