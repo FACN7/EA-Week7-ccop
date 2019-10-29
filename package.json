@@ -20,6 +20,8 @@
   "directories": {
     "test": "tests"
   },
-  "dependencies": {},
+  "dependencies": {
+    "env2": "^2.2.2"
+  },
   "devDependencies": {}
 }
