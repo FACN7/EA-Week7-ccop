@@ -181,7 +181,7 @@ body{
 
 /* end of form styling */
 
-/* navbar styling */
+
 * {
     margin:0;
     padding:0;
@@ -190,7 +190,7 @@ body{
   .navbar {
     width:100%;
     height:60px;
-    background: #57b846;;
+    background: #57b846;
   background: radial-gradient(circle, #57b846 0%);
     color: white;
      margin: auto;
@@ -214,7 +214,22 @@ body{
   .right div:hover{
     background: #00203fa0
   }
+
+ .logout-btn{
+    background: none;
+    border:none;
+    color:white;
+    font-size: 16px;
+ }
+
+ 
+ .table-container {
+    padding-top: 20px;
+  }
   
+  #transactions-table tr td {
+    padding: 10px;
+    border: 1px solid black;
+  }  
   
 
-/* end of navbar styling */
