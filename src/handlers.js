@@ -8,16 +8,13 @@ const queryString = require("querystring");
 const login_query=require("./queries/login_query")
 const signup_query = require("./queries/sign_up_query");
 const transactions_query = require("./queries/transactions_query");
+const addTransaction_query= require("./queries/addTransaction_query");
 
 const { parse } = require('cookie');
 const { sign, verify } = require('jsonwebtoken');
 const {  comparePasswords,  hashPassword}=require('./scripts/passwordmangment');
 var userid;
 const SECRET = 'poiugyfguhijokpkoihugyfyguhijo';
-
-
-
-
 const serverError = (err, response) => {
     response.writeHead(500, "Content-Type:text/html");
     response.end("<h1>Sorry, there was a problem loading the homepage</h1>");
@@ -83,7 +80,7 @@ const homeHandler = (request,response) => {
   };
 
   const loginHandler= (request, response) =>{
-    if (request.headers.cookie){
+    if (request.headers.cookie&&userid!==undefined){
       const { jwt } = parse(request.headers.cookie);
       console.log(jwt);
     verify(jwt, SECRET, (err, jwt) => {
@@ -230,7 +227,6 @@ const homeHandler = (request,response) => {
   const transactionsHandler=(request,response)=>{
     if (request.headers.cookie&&userid!==undefined){
       const { jwt } = parse(request.headers.cookie);
-      console.log(jwt);
     verify(jwt, SECRET, (err, jwt) => {
             if (err) {
               console.log(err);
@@ -255,11 +251,65 @@ const homeHandler = (request,response) => {
     }
   }
 
+  const logoutHandler=(request,response)=>{
+      userid=undefined;
+      response.writeHead(
+        302,
+        {
+          'Location': '/',
+          'Set-Cookie': 'jwt=0; Max-Age=0'
+        }
+      );
+      return response.end();
+  }
+
+  const addtransactionsHandles=(request,response)=>{
+    let data = "";
+    request.on("data", function (chunk) {
+        
+      data += chunk;
+    });
+    request.on("end", () => {
+      const Description = queryString.parse(data).Description;
+      const Balance = queryString.parse(data).Balance;
+      if(!Description||!Balance){
+        const filepath = path.join(__dirname, "..", "public", "index.html");
+    readFile(filepath, (err, file) => {
+      if (err) return serverError(err, response);
+      response.writeHead(302, { "Location":"/","Content-Type": "text/html" });
+      response.end(file);
+    });
+    return;
+  };
+      
+      if(userid){
+      addTransaction_query(userid.email,Balance,Description,(err,res)=>{
+        if(err)console.log(err);
+     request.url="/"
+        homeHandler(request,response);
+        return;
+
+      })
+      }else{
+             request.url="/"
+        homeHandler(request,response);
+        return;
+
+
+      }
+
+
+
+    });
+  }
+
 module.exports = {
     homeHandler,
     publicHandler,
     errorHandler,
     loginHandler,
     signUpHandler,
-    transactionsHandler
+    transactionsHandler,
+    logoutHandler,
+    addtransactionsHandles
   };
