@@ -1,12 +1,18 @@
-function request(url) {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", url);
-      xhr.onload = () => resolve(xhr.responseText);
-      xhr.onerror = () => reject(xhr.statusText);
-      xhr.send();
-    });
+function request(url, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          cb(null, xhr.responseText);
+        } else {
+          cb("error" + xhr.responseType);
+        }
+      }
+    };
+    xhr.open("GET", url, true);
+    xhr.send();
   }
+  
 
   function showTransactionsListDom(err, data) {
     if (err) {
@@ -21,7 +27,7 @@ function request(url) {
         row.appendChild(date);
         var desc = document.createElement("td");
         desc.innerHTML = tran.descrip;
-        row.appendChild(date);
+        row.appendChild(desc);
         var balance = document.createElement("td");
         balance.innerHTML = tran.balance;
         row.appendChild(balance);

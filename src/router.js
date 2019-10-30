@@ -1,6 +1,6 @@
 const {   homeHandler,
     publicHandler,
-    errorHandler,loginHandler,signUpHandler} = require("./handlers");
+    errorHandler,loginHandler,signUpHandler,transactionsHandler} = require("./handlers");
   
 
 const router = (request, response) => {
@@ -22,7 +22,7 @@ const router = (request, response) => {
     } else if (url === "/add-trnasaction") {
       
     }  else if (url === "/transactions") {
-      
+      transactionsHandler(request,response)
     }else if (url === "/delete-trnasaction") {
     } else {
       errorHandler(response);
