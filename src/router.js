@@ -9,7 +9,7 @@ const router = (request, response) => {
     console.log(url);
 
       if (url === "/") {
-      homeHandler(response);
+      homeHandler(request,response);
     } else if (url === "/login") {
         loginHandler(request,response)
 
@@ -21,7 +21,9 @@ const router = (request, response) => {
     } else if (url === "/logout") {
     } else if (url === "/add-trnasaction") {
       
-    } else if (url === "/delete-trnasaction") {
+    }  else if (url === "/transactions") {
+      
+    }else if (url === "/delete-trnasaction") {
     } else {
       errorHandler(response);
     }
