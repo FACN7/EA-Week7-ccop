@@ -12,7 +12,7 @@ const transactions_query = require("./queries/transactions_query");
 const { parse } = require('cookie');
 const { sign, verify } = require('jsonwebtoken');
 const {  comparePasswords,  hashPassword}=require('./scripts/passwordmangment');
-
+var userid;
 const SECRET = 'poiugyfguhijokpkoihugyfyguhijo';
 
 
@@ -41,8 +41,33 @@ const serverError = (err, response) => {
   };
   
 
-const homeHandler = response => {
-    console.log("homehandler")
+const homeHandler = (request,response) => {
+    if (request.headers.cookie){
+      const { jwt } = parse(request.headers.cookie);
+      console.log(jwt);
+    verify(jwt, SECRET, (err, jwt) => {
+            if (err) {
+              console.log(err);
+            } else {
+                // check user
+              const message = `Your user id is: ${jwt.email}`;
+              if(userid.email===jwt.email){
+                response.writeHead(
+                  302,
+                  {
+                    'Location': '/public/private.html',
+                    'Set-Cookie': `jwt=${sign(userid,SECRET)}; HttpOnly`
+                  }
+                );
+                response.end();
+              }{
+                console.log("hackers")
+              }
+            } 
+          });
+          return;
+    }
+
 
     const filepath = path.join(__dirname, "..", "public", "index.html");
     readFile(filepath, (err, file) => {
@@ -58,7 +83,34 @@ const homeHandler = response => {
   };
 
   const loginHandler= (request, response) =>{
-console.log("loginhandler")
+    if (request.headers.cookie){
+      const { jwt } = parse(request.headers.cookie);
+      console.log(jwt);
+    verify(jwt, SECRET, (err, jwt) => {
+            if (err) {
+              console.log(err);
+            } else {
+                // check user
+              const message = `Your user id is: ${jwt.email}`;
+              if(userid.email===jwt.email){
+                response.writeHead(
+                  302,
+                  {
+                    'Location': '/public/private.html',
+                    'Set-Cookie': `jwt=${sign(userid,SECRET)}; HttpOnly`
+                  }
+                );
+                response.end();
+              }{
+                console.log("hackers")
+              }
+            } 
+          });
+          return;
+    }
+
+
+
     let data = "";
     request.on("data", function (chunk) {
         
@@ -67,7 +119,11 @@ console.log("loginhandler")
     request.on("end", () => {
       const password = queryString.parse(data).password;
       const email = queryString.parse(data).email;
-
+      if(!email||!password){
+        request.url="/"
+        homeHandler(request,response);
+        return;
+      }
       login_query(email,(err,res)=>{
         if (err) {
             response.writeHead(500, "Content-Type: text/html");
@@ -87,11 +143,12 @@ console.log("loginhandler")
                 response.end("<h1>Sorry, there was a problem logging password not correct</h1>");
               }else{
                   //setcookie savedpassword
+                  userid={email:email};
                   response.writeHead(
                     302,
                     {
                       'Location': '/public/private.html',
-                      'Set-Cookie': `jwt=${sign({email},SECRET)}; HttpOnly`
+                      'Set-Cookie': `jwt=${sign(userid,SECRET)}; HttpOnly`
                     }
                   );
                   response.end();
@@ -100,29 +157,7 @@ console.log("loginhandler")
 
            })
            
-          //  verify(savedpassword, SECRET, (err, jwt) => {
-          //   if (err) {
-          //     return send401();
-          //   } else {
-          //       // check password
-          //     const message = `Your user id is: ${jwt.userId}`;
-          //     const jwtpassword = jwt.password;
-          //     if(jwtpassword!==password){
-          //       response.writeHead(500, "Content-Type: text/html");
-          //       response.end("<h1>Sorry, there was a problem logging password not correct</h1>");
-          //     }else{
-          //         //setcookie savedpassword
-          //         response.writeHead(
-          //           302,
-          //           {
-          //             'Location': '/',
-          //             'Set-Cookie': `jwt=${sign(jwt.password,SECRET)}; HttpOnly`
-          //           }
-          //         );
-          //         response.end();
-          //     }
-          //   }
-          // });
+       
         }
           
 
@@ -189,6 +224,35 @@ console.log("loginhandler")
 
     });
       
+  }
+
+
+  const transactionsHandler=(request,response)=>{
+    if (request.headers.cookie){
+      const { jwt } = parse(request.headers.cookie);
+      console.log(jwt);
+    verify(jwt, SECRET, (err, jwt) => {
+            if (err) {
+              console.log(err);
+            } else {
+                // check user
+              const message = `Your user id is: ${jwt.email}`;
+              if(userid.email===jwt.email){
+                transactions(userid.email).then((err,res)=>{
+                  if (err) return console.log(err);
+                  let dynmicData = JSON.stringify(res);
+                  response.writeHead(200, { "Content-Type": "application/json" });
+                  response.end(dynmicData);
+                  console.log(dynmicData);
+                })
+            
+              }{
+                console.log("hackers")
+              }
+            } 
+          });
+          return;
+    }
   }
 
 module.exports = {
