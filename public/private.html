@@ -1,24 +1,58 @@
 <!DOCTYPE html>
+
 <html>
   <head>
     <meta charset="utf-8" />
     <title>FACN7 Credit Card</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link rel="stylesheet" href="style.css" />
     <script src="private.js"></script>
-
   </head>
 
   <body>
-<div class="table-container">
-    <table id="transactions-table">
-      <tr>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Balance</th>
-      </tr>
-    </table>
+  
+    <div class="navbar">
+      <div class="left">
+        <h1>Logo</h1>
+      </div>
+      <div class="right">
+        <div >Home</div>
+        <div>About</div>
+        <div>
+            <form class="form" action="/logout" method="POST">
+              <button type="submit" class="logout-btn" >Log out</button>
+            </form>
+        </div>
+        
+      </div>
+    </div>
 
+    <div id="login-form">
+      <form class="form" action="/add-transaction" method="POST">
+        <input
+          type="text"
+          id="desc"
+          name="Description"
+          placeholder="Enter Description"
+        />
+        <input
+          type="text"
+          id="balance"
+          name="Balance"
+          placeholder="Enter Balance"
+        />
+        <button type="submit" name="button" class="btn login">ADD</button>
+      </form>
+    </div>
 
-</body>
+    <div class="table-container">
+      <table id="transactions-table">
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Balance</th>
+        </tr>
+      </table>
+    </div>
+  </body>
 </html>
