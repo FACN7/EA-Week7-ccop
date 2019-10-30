@@ -3,6 +3,7 @@ const pg = require("pg");
 const { readFile } = require("fs");
 const fs = require("fs");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 const queryString = require("querystring");
 const login_query=require("./queries/login_query")
 const signup_query = require("./queries/sign_up_query");
@@ -10,6 +11,7 @@ const transactions_query = require("./queries/transactions_query");
 
 const { parse } = require('cookie');
 const { sign, verify } = require('jsonwebtoken');
+const {  comparePasswords,  hashPassword}=require('./scripts/passwordmangment');
 
 const SECRET = 'poiugyfguhijokpkoihugyfyguhijo';
 
@@ -72,25 +74,55 @@ console.log("loginhandler")
             response.end("<h1>Sorry, there was a problem logging</h1>");
             console.log(err);
         }else{
-            console.log(res.rows);
+            // console.log(res.rows);
             //assume res.rows is array of object
            let savedpassword= res.rows[0].password;
-           
-           verify(savedpassword, SECRET, (err, jwt) => {
-            if (err) {
+           comparePasswords(password,savedpassword,(err,result)=>{
+            if(err){
               return send401();
-            } else {
-                // check password
-              const message = `Your user id is: ${jwt.userId}`;
-              const jwtpassword = `Your password is: ${jwt.password}`;
-              if(jwtpassword!=password){
+
+            }else{
+              if(result===false){
                 response.writeHead(500, "Content-Type: text/html");
                 response.end("<h1>Sorry, there was a problem logging password not correct</h1>");
               }else{
                   //setcookie savedpassword
+                  response.writeHead(
+                    302,
+                    {
+                      'Location': '/public/private.html',
+                      'Set-Cookie': `jwt=${sign({email},SECRET)}; HttpOnly`
+                    }
+                  );
+                  response.end();
               }
             }
-          });
+
+           })
+           
+          //  verify(savedpassword, SECRET, (err, jwt) => {
+          //   if (err) {
+          //     return send401();
+          //   } else {
+          //       // check password
+          //     const message = `Your user id is: ${jwt.userId}`;
+          //     const jwtpassword = jwt.password;
+          //     if(jwtpassword!==password){
+          //       response.writeHead(500, "Content-Type: text/html");
+          //       response.end("<h1>Sorry, there was a problem logging password not correct</h1>");
+          //     }else{
+          //         //setcookie savedpassword
+          //         response.writeHead(
+          //           302,
+          //           {
+          //             'Location': '/',
+          //             'Set-Cookie': `jwt=${sign(jwt.password,SECRET)}; HttpOnly`
+          //           }
+          //         );
+          //         response.end();
+          //     }
+          //   }
+          // });
         }
           
 
@@ -124,18 +156,35 @@ console.log("loginhandler")
     //   console.log(name,password,email);
       let userDetails={userId:email,password:password};
       console.log(userDetails)
-      const signup = sign(userDetails, SECRET);
-      signup_query(email,name,signup,(err,res)=>{
-        if (err) {
-            console.log("signup_query:",err);
-            return send401();
-          } else {
-                    
+      // const signup = sign(userDetails, SECRET);
+    hashPassword(password,(err,result)=>{
+      if(err){
+        console.log("hashpassworderror:",err);
 
+      }else{
+        signup_query(email,name,result,(err,res)=>{
+          //redircete
+          if (err) {
+              console.log("signup_query:",err);
+              return send401();
+            } else {
+                      
+              response.writeHead(
+                302,
+                {
+                  'Location': '/'
+                }
+              );
+              response.end();
+  
+              
+            }
+        })
+      }
+  
 
-            
-          }
       })
+    
 
 
     });

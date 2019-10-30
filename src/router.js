@@ -4,7 +4,10 @@ const {   homeHandler,
   
 
 const router = (request, response) => {
+  
     const { url } = request;
+    console.log(url);
+
       if (url === "/") {
       homeHandler(response);
     } else if (url === "/login") {
