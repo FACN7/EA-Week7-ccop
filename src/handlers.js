@@ -42,7 +42,7 @@ const serverError = (err, response) => {
   
 
 const homeHandler = (request,response) => {
-    if (request.headers.cookie){
+    if (request.headers.cookie&&userid!==undefined){
       const { jwt } = parse(request.headers.cookie);
       console.log(jwt);
     verify(jwt, SECRET, (err, jwt) => {
@@ -228,7 +228,7 @@ const homeHandler = (request,response) => {
 
 
   const transactionsHandler=(request,response)=>{
-    if (request.headers.cookie){
+    if (request.headers.cookie&&userid!==undefined){
       const { jwt } = parse(request.headers.cookie);
       console.log(jwt);
     verify(jwt, SECRET, (err, jwt) => {
@@ -238,16 +238,16 @@ const homeHandler = (request,response) => {
                 // check user
               const message = `Your user id is: ${jwt.email}`;
               if(userid.email===jwt.email){
-                transactions(userid.email).then((err,res)=>{
-                  if (err) return console.log(err);
-                  let dynmicData = JSON.stringify(res);
+                transactions_query(userid.email).then((res)=>{
+                  let dynmicData = JSON.stringify(res.rows);
                   response.writeHead(200, { "Content-Type": "application/json" });
+                  // console.log(dynmicData);
+
                   response.end(dynmicData);
-                  console.log(dynmicData);
-                })
+                }).catch(err => console.log(err))
             
-              }{
-                console.log("hackers")
+              }else{
+                console.log("hackerstrans")
               }
             } 
           });
@@ -260,5 +260,6 @@ module.exports = {
     publicHandler,
     errorHandler,
     loginHandler,
-    signUpHandler
+    signUpHandler,
+    transactionsHandler
   };
