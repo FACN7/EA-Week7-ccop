@@ -14,6 +14,7 @@ function request(url, cb) {
   }
   
 
+
   function showTransactionsListDom(err, data) {
     if (err) {
       throw new Error("We have an error:", err);
@@ -28,9 +29,9 @@ function request(url, cb) {
         var desc = document.createElement("td");
         desc.innerHTML = tran.descrip;
         row.appendChild(desc);
-        var balance = document.createElement("td");
-        balance.innerHTML = tran.balance;
-        row.appendChild(balance);
+        var charge = document.createElement("td");
+        charge.innerHTML = tran.charge;
+        row.appendChild(charge);
         table.appendChild(row);
       });
     }

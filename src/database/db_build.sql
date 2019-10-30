@@ -13,7 +13,7 @@ BEGIN;
     IF NOT EXISTS transactions(
         email VARCHAR (50),
         trans_id SERIAL,
-        balance INTEGER NOT NULL,
+        charge DECIMAL(10,2) DEFAULT 0,
         descrip VARCHAR (50) NOT NULL,
         date DATE DEFAULT CURRENT_DATE,
         FOREIGN KEY (email) REFERENCES users (email)
