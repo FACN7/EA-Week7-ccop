@@ -22,6 +22,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "env2": "^2.2.2"
   },
   "devDependencies": {}
