@@ -231,5 +231,15 @@ body{
     padding: 10px;
     border: 1px solid black;
   }  
+
+  #add-trans {
+      display: flex;
+      height: 30px;
+      margin-top: 10px;
+  }
+
+  .btn-add {
+      width: 20%;
+  }
   
 

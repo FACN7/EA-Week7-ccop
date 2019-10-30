@@ -27,8 +27,8 @@
       </div>
     </div>
 
-    <div id="login-form">
-      <form class="form" action="/add-transaction" method="POST">
+    <div id="form">
+      <form class="form" id="add-trans" action="/add-transaction" method="POST">
         <input
           type="text"
           id="desc"
@@ -37,11 +37,11 @@
         />
         <input
           type="text"
-          id="balance"
-          name="Balance"
-          placeholder="Enter Balance"
+          id="charge"
+          name="charge"
+          placeholder="Enter Charge"
         />
-        <button type="submit" name="button" class="btn login">ADD</button>
+        <button type="submit" name="button" class="btn-add">ADD</button>
       </form>
     </div>
 
@@ -50,9 +50,12 @@
         <tr>
           <th>Date</th>
           <th>Description</th>
-          <th>Balance</th>
+          <th>Charge</th>
         </tr>
       </table>
+    </div>
+    <div>
+      <span id="balance">balance</span>
     </div>
   </body>
 </html>

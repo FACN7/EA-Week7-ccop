@@ -1,9 +1,9 @@
 const databaseConnection = require("../database/db_connection.js");
 
-const addTransaction = (email,balance,descrip, cb) => {
+const addTransaction = (email,charge,descrip, cb) => {
   databaseConnection.query(
-    `INSERT INTO transactions (email,balance,descrip) VALUES ($1,$2,$3)`,
-    [email,balance,descrip],
+    `INSERT INTO transactions (email,charge,descrip) VALUES ($1,$2,$3)`,
+    [email,charge,descrip],
     (err, res) => {
       if (err) {
         return cb(err);

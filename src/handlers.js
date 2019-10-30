@@ -243,7 +243,7 @@ const homeHandler = (request,response) => {
                 }).catch(err => console.log(err))
             
               }else{
-                console.log("hackerstrans")
+                console.log("hacker")
               }
             } 
           });
@@ -271,8 +271,8 @@ const homeHandler = (request,response) => {
     });
     request.on("end", () => {
       const Description = queryString.parse(data).Description;
-      const Balance = queryString.parse(data).Balance;
-      if(!Description||!Balance){
+      const charge = parseFloat(queryString.parse(data).charge);
+      if(!Description||!charge){
         const filepath = path.join(__dirname, "..", "public", "index.html");
     readFile(filepath, (err, file) => {
       if (err) return serverError(err, response);
@@ -283,7 +283,7 @@ const homeHandler = (request,response) => {
   };
       
       if(userid){
-      addTransaction_query(userid.email,Balance,Description,(err,res)=>{
+      addTransaction_query(userid.email,charge,Description,(err,res)=>{
         if(err)console.log(err);
      request.url="/"
         homeHandler(request,response);
