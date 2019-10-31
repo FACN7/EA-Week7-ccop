@@ -12,7 +12,7 @@ You can clone the repo by typing the command
 > git clone https://github.com/FACN7/EA-Week7-ccop.git
 > cd EA-Week7-ccop
 > npm i
-> google-chrome index.html
+> npm start
 ```
 
 ![](https://media.giphy.com/media/lYZjoIy0UOEJa/giphy.gif)
@@ -32,7 +32,6 @@ to fill the charge amount and the description.
 - [x] Set up a database
 - [x] Host on Heroku incl database
 - [x] Add sign in and log in features with cookies and JWT.
-- [x] Validation
 - [x] Display the list of transactions from DB in DOM
 - [x] Add a transaction to the list and update the DB
 - [x] CSS
