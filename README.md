@@ -13,7 +13,7 @@ You can clone the repo by typing the command
 > cd EA-Week7-ccop
 > npm i
 > google-chrome index.html
-`
+
 
 ![](https://media.giphy.com/media/lYZjoIy0UOEJa/giphy.gif)
 ## user journey
