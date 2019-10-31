@@ -19,7 +19,7 @@ function request(url, cb) {
     if (err) {
       throw new Error("We have an error:", err);
     } else {
-      var transactions = JSON.parse(data)
+      var transactions = JSON.parse(data);
       var table = document.getElementById("transactions-table");
       transactions.forEach(function(tran) {
         var row = document.createElement("tr");

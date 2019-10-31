@@ -9,12 +9,12 @@ const login_query=require("./queries/login_query")
 const signup_query = require("./queries/sign_up_query");
 const transactions_query = require("./queries/transactions_query");
 const addTransaction_query= require("./queries/addTransaction_query");
-
+require('env2')('config.env');
 const { parse } = require('cookie');
 const { sign, verify } = require('jsonwebtoken');
 const {  comparePasswords,  hashPassword}=require('./scripts/passwordmangment');
 var userid;
-const SECRET = 'poiugyfguhijokpkoihugyfyguhijo';
+const SECRET = process.env.SECRET;
 const serverError = (err, response) => {
     response.writeHead(500, "Content-Type:text/html");
     response.end("<h1>Sorry, there was a problem loading the homepage</h1>");
